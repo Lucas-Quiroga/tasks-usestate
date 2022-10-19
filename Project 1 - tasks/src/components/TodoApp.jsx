@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import Todo from "./Todo";
+import "./todoapp.css";
 
 const TodoApp = () => {
   const [title, setTitle] = useState("hola");
   const [todos, setTodos] = useState([]);
-
-  //   const handleClick = (e) => {
-  //     e.preventDefault();
-  //     setTitle("Lucas");
-  //   };
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -24,8 +20,21 @@ const TodoApp = () => {
     };
 
     setTodos([...todos, newTodo]);
-    console.log(todos);
+    setTitle("");
   };
+
+  function handleUpdate(id, value) {
+    const temp = [...todos];
+    const item = temp.find((item) => item.id === id);
+    item.title = value;
+    setTodos(temp);
+  }
+
+  function handleDelete(id) {
+    const temp = todos.filter((item) => item.id !== id);
+    setTodos(temp);
+  }
+
   return (
     <div>
       <h1>Lista de tareas</h1>
@@ -42,7 +51,12 @@ const TodoApp = () => {
 
         <div className="todosContainer">
           {todos.map((item) => (
-            <Todo item={item} key={item.id} />
+            <Todo
+              item={item}
+              key={item.id}
+              onUpdate={handleUpdate}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
       </div>
